@@ -5374,7 +5374,7 @@ int where;
       if (s > buf || (flags & 4))
 	{
 	  *s++ = ' ';
-	  *s++ = ' ';
+	  //*s++ = ' ';
 	}
       if (p->w_number == where)
         {
@@ -5393,8 +5393,8 @@ int where;
 	}
       if (rend != -1)
 	AddWinMsgRend(s, rend);
-      sprintf(s, "%d", p->w_number);
-      s += strlen(s);
+      //sprintf(s, "%d", p->w_number);
+      //s += strlen(s);
       if (display && p == D_fore)
 	*s++ = '*';
       if (!(flags & 2))
@@ -5403,7 +5403,7 @@ int where;
 	    *s++ = '-';
           s = AddWindowFlags(s, len, p);
 	}
-      *s++ = ' ';
+      //*s++ = ' ';
       strncpy(s, cmd, l);
       s += l;
       if (rend != -1)
