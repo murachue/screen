@@ -5260,6 +5260,23 @@ struct win *wi;
   wi->w_inlen = 0;
   wtab[wi->w_number] = 0;
 
+  // shift after windows
+  {
+    int i;
+
+    for (i = wi->w_number; i < maxwin - 1; i++)
+    {
+      if (wtab[i + 1] != 0)
+      {
+	wtab[i] = wtab[i + 1];
+	wtab[i + 1] = 0;
+	wtab[i]->w_number--;
+      }
+      else
+	break;
+    }
+  }
+
   if (windows == 0)
     {
       FreeWindow(wi);
@@ -5393,8 +5410,8 @@ int where;
 	}
       if (rend != -1)
 	AddWinMsgRend(s, rend);
-      //sprintf(s, "%d", p->w_number);
-      //s += strlen(s);
+      sprintf(s, "%d", p->w_number);
+      s += strlen(s);
       if (display && p == D_fore)
 	*s++ = '*';
       if (!(flags & 2))
