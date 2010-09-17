@@ -3001,12 +3001,23 @@ int key;
 	    n += old;
 	  else if (rel < 0)
 	    n = old - n;
-	  if (!WindowChangeNumber(fore, n))
-	    {
-	      /* Window number could not be changed. */
-	      queryflag = -1;
-	      return;
-	    }
+	  {
+	    int delta = n < old ? 1 : old < n ? -1 : 0;
+	    struct win *f = fore;
+	    do  /* do WindowChangeNumber least once */
+	      {
+		if (!WindowChangeNumber(f, n))
+		  {
+		    /* Window number could not be changed. */
+		    queryflag = -1;
+		    return;
+		  }
+		n += delta;
+		if (wtab[old] == 0)  /* if not continue, */
+		  break;
+		f = wtab[old];
+	      }while (old != n);
+	  }
 	}
       break;
     case RC_SILENCE:
